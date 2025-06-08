@@ -257,6 +257,8 @@ If you don't give a custom history name, it auto-generates one with the name of 
 # upload_and_run_workflow(file_path = "...", api_key = "...", history_name = "MyAnalysis1")
 ```
 
+To run in a different galaxy server, you just need to change the website
+galaxy_url = "**https://usegalaxy.choose_server**"
 
 ## Step 2: Upload Genome File
 
