@@ -1,0 +1,45 @@
+# Explaining the function "upload_and_run_workflow()"
+Let's break down the function "upload_and_run_workflow()" step-by-step. Here, I'll explain what each part does
+
+## Step 1: Setup Headers and History
+
+This step creates HTTP headers to authenticate with Galaxy using your API key and calls the Galaxy API to create a new history, where all uploaded data and workflow results will go.
+
+If you don't give a custom history name, it auto-generates one with the name of the genome file. 
+
+**You can set a custom name like this:**
+
+```{r}
+# upload_and_run_workflow(file_path = "...", api_key = "...", history_name = "MyAnalysis1")
+```
+
+
+## Step 2: Upload Genome File
+
+This step uploads your genome file (FASTA) into the Galaxy history.
+You only need to change:
+
+**file_path** — your local file path to the genome
+
+Optionally, set **dbkey** to something like "fungi" if needed for downstream tools
+
+## Step 3: Find Your Workflow by Name
+
+This step looks through your existing workflows and finds the one matching the name.
+
+You can change **workflow_name** if your Galaxy workflow has a different name.
+
+## Step 4: Run the Workflow
+
+This step tells Galaxy to: run the workflow using the uploaded genome as input 0; And start the workflow now with this input and save the results in the new history
+
+Note: This assumes your workflow uses a single FASTA input and it’s the first input slot (index 0). If your workflow has multiple inputs, we can update this structure.
+
+## How to Run It
+
+At least, you need to change only two things when calling the function:
+
+upload_and_run_workflow(
+  file_path = "**/path/to/your_genome.fasta**",
+  api_key = "**YOUR_GALAXY_API_KEY**"
+)
