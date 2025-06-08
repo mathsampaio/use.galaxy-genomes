@@ -13,13 +13,13 @@ To do this, you must have:
 
 2. A workflow on Galaxy
 
-# Sections
+# Content
 
-Step-by-step
+[Step-by-step: understanding the script](https://github.com/mathsampaio/use.galaxy-genomes/blob/main/Step-by-step)
 
 [Uploadin a single genome and running it through your Galaxy workflow](https://github.com/mathsampaio/use.galaxy-genomes/blob/main/Single_genome)
 
-Looping over all genomes in a folder and run them through your Galaxy workflow
+[Looping over all genomes in a folder and run them through your Galaxy workflow](https://github.com/mathsampaio/use.galaxy-genomes/blob/main/Folder_of_genomes)
 
 
 # Uploadin a single genome and running it through your Galaxy workflow
