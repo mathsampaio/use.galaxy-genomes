@@ -16,7 +16,9 @@ To do this, you must have:
 # Sections
 
 Step-by-step
-[Uploadin a single genome and running it through your Galaxy workflow]
+
+[Uploadin a single genome and running it through your Galaxy workflow](https://github.com/mathsampaio/use.galaxy-genomes/blob/main/Single_genome)
+
 Looping over all genomes in a folder and run them through your Galaxy workflow
 
 
