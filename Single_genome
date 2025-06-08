@@ -1,0 +1,91 @@
+## The script:
+
+```{r}
+# Step 0: Load Libraries and Set Credentials
+library(httr)
+library(jsonlite)
+
+upload_and_run_workflow <- function(
+  file_path,
+  workflow_name = "Contiguity and completeness",
+  history_name = NULL,
+  galaxy_url = "https://usegalaxy.eu",
+  api_key 
+) {
+  headers <- add_headers("x-api-key" = api_key)
+  
+# STEP 1: Create a history
+  if (is.null(history_name)) {
+    history_name <- paste0("Auto_", basename(file_path), "_", format(Sys.time(), "%Y%m%d%H%M%S"))
+  }
+  res_hist <- POST(
+    url = paste0(galaxy_url, "/api/histories"),
+    headers,
+    body = list(name = history_name),
+    encode = "json"
+  )
+  stop_for_status(res_hist)
+  history_id <- content(res_hist)$id
+  message("✔ History created: ", history_name)
+
+# STEP 2: Upload the file
+  res_upload <- POST(
+    url = paste0(galaxy_url, "/api/tools"),
+    headers,
+    body = list(
+      tool_id = "upload1",
+      history_id = history_id,
+      `files_0|file_data` = upload_file(file_path),
+      `files_0|type` = "upload_dataset",
+      `dbkey` = "?"
+    ),
+    encode = "multipart"
+  )
+  stop_for_status(res_upload)
+  dataset_id <- content(res_upload)$outputs[[1]]$id
+  message("✔ File uploaded: ", basename(file_path))
+  
+# STEP 3: Find workflow by name
+  res_wf <- GET(paste0(galaxy_url, "/api/workflows"), headers)
+  stop_for_status(res_wf)
+  workflows <- content(res_wf)
+  wf_match <- Filter(function(wf) wf$name == workflow_name, workflows)
+  if (length(wf_match) == 0) stop("❌ Workflow not found: ", workflow_name)
+  workflow_id <- wf_match[[1]]$id
+  message("✔ Workflow found: ", workflow_name)
+
+# STEP 4: Run the workflow
+  input_map <- list("0" = list(id = dataset_id, src = "hda"))
+
+  res_run <- POST(
+    url = paste0(galaxy_url, "/api/workflows/", workflow_id, "/invocations"),
+    headers,
+    body = list(
+      history_id = history_id,
+      inputs = toJSON(input_map, auto_unbox = TRUE)
+    ),
+    encode = "json"
+  )
+  stop_for_status(res_run)
+  invocation_id <- content(res_run)$id
+  message("✔ Workflow launched! Invocation ID: ", invocation_id)
+
+# Return all useful IDs
+  return(list(
+    history_id = history_id,
+    dataset_id = dataset_id,
+    workflow_id = workflow_id,
+    invocation_id = invocation_id
+  ))
+}
+
+```
+
+## Running it:
+
+```{r}
+upload_and_run_workflow(
+  file_path = "C:/Users/sampa/Documents/Doutorado/Dataset/Dothideomycetes_assembly/NCBI/Pleosporales_order_assemblies/Acrocalymmaceae/All_assemblies/Acrocalymma_vagum_GCA_028476805_1_ncbi_dataset.fna",
+  api_key = "7c5112d3767a69caba6863af00b47200"
+)
+```
