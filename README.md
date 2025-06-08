@@ -15,7 +15,7 @@ To do this, you must have:
 
 # Content
 
-[Step-by-step: understanding the script](https://github.com/mathsampaio/use.galaxy-genomes/blob/main/Step-by-step)
+[Step-by-step: understanding the script](https://github.com/mathsampaio/use.galaxy-genomes/blob/main/README.md#explaining-the-function-upload_and_run_workflow)
 
 [Uploadin a single genome and running it through your Galaxy workflow](https://github.com/mathsampaio/use.galaxy-genomes/blob/main/Single_genome)
 
